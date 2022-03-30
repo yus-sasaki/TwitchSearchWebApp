@@ -1,0 +1,96 @@
+<template>
+<div id="app">
+  <div class="container">
+    <h1>TwitchApp</h1>
+    <div class="container" id="app">
+      <div>
+        <StreamsList />
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+
+<script>
+import StreamsList from './streams-list.vue'
+
+export default {
+  components:{
+    StreamsList,
+  },
+  data(){
+    return{
+
+    };
+  },
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+body {
+  line-height: 1.5;
+  overflow-x: hidden;
+  font-family: Roboto, serif;
+}
+
+h1, h2, h3, h4 {
+  margin: 1em 0 .5em;
+  line-height: 1.25;
+}
+
+#navbar {
+  background-color: black;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  text-align: center;
+}
+
+#app {
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  align-content: center;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
+.content div {
+  margin: 1em;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  display: block;
+  width: 250px;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+}
+
+.stream-text {
+  height: 20px;
+}
+
+.stats {
+  display: flex;
+  flex-direction: row;
+}
+</style>
