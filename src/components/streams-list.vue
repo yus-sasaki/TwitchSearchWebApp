@@ -1,12 +1,13 @@
 <template>
 <div>
+  <label v-text="selectCategory"></label>
   <input v-model="inputtext" type="text" class="form-control">
   <button v-on:click="SearchCategories()">検索</button>
   <div class="row">
-    <div class="columns large-3 medium-6" v-for="stream in result" :key="stream">
+    <div class="columns large-3 medium-6" v-for="stream in streamLists" :key="stream">
       <div class="card"> 
           <div class="stream-text">{{ stream.name }}</div>
-           <img :src=stream.box_art_url>
+           <img :src=stream.box_art_url v-on:click="SelectCategories(stream.id)">
       </div>
     </div>
   </div>
@@ -18,7 +19,8 @@ export default {
   data(){
     return{
       inputtext:"",
-      result: [],
+      selectCategory:"",
+      streamLists: [],
     }
   },
   methods: {
@@ -27,8 +29,11 @@ export default {
       this.axios.get('https://api.twitch.tv/helix/search/categories?query='+searchkey)
       .then((response) => {
         console.log(response.data.data)
-        this.result = response.data.data;
+        this.streamLists = response.data.data;
       }).catch((error) => { console.log(error); });
+    },
+    SelectCategories(categoryId) {
+      this.selectCategory = categoryId;
     },
   },
 }
