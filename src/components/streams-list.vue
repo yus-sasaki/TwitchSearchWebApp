@@ -1,16 +1,19 @@
 <template>
 <div>
-  <label v-text="selectCategory"></label>
   <input v-model="inputCategoryText" type="text" class="form-control">
   <button v-on:click="SearchCategories()">検索</button>
   <div class="row">
     <div class="columns large-3 medium-6" v-for="stream in streamLists" :key="stream">
       <div class="card"> 
           <div class="stream-text">{{ stream.name }}</div>
-           <img :src=stream.box_art_url v-on:click="SelectCategories(stream.id)">
+           <img :src=stream.box_art_url v-on:click="SelectCategories(stream.id, stream.box_art_url)">
       </div>
     </div>
   </div>
+
+  <label v-text="selectCategory"></label>
+  <img :src=selectCategoryImgSrc>
+
   <input v-model="inputChannelText" type="text" class="form-control">
   <button v-on:click="SearchChannels()">検索</button>
     <div class="row">
@@ -30,6 +33,7 @@ export default {
       inputCategoryText:"",
       inputChannelText:"",
       selectCategory:"",
+      selectCategoryImgSrc:"",
       streamLists: [],
       channelLists: [],
     }
@@ -46,17 +50,23 @@ export default {
     },
 
     // 選択してるゲームカテゴリ保持
-    SelectCategories(categoryId) {
+    SelectCategories(categoryId, box_art_ur) {
       this.selectCategory = categoryId;
+      this.selectCategoryImgSrc =  box_art_ur;
     },
 
     // 配信の検索
     SearchChannels() {
-      var searchkey = this.inputChannelText;
-      this.axios.get('https://api.twitch.tv/helix/search/channels?query='+searchkey)
+      var serchkey = this.inputChannelText;
+      this.axios.get('https://api.twitch.tv/helix/streams?game_id=' + this.selectCategory + '&type=live&first=100&language=ja')
       .then((response) => {
         console.log(response.data.data)
-        this.channelLists = response.data.data;
+        var streams = response.data.data;
+        if(serchkey != ""){
+          this.channelLists = streams.filter(s => (s.title.indexOf(serchkey) != -1));
+        }else{
+          this.channelLists = streams;
+        }        
       }).catch((error) => { console.log(error); });
     },
   },
