@@ -1,28 +1,37 @@
 <template>
-<div>
-  <input v-model="inputCategoryText" type="text" class="form-control">
-  <button v-on:click="SearchCategories()">検索</button>
-  <div class="row">
-    <div class="columns large-3 medium-6" v-for="stream in streamLists" :key="stream">
-      <div class="card"> 
-          <div class="stream-text">{{ stream.name }}</div>
-           <img :src=stream.box_art_url v-on:click="SelectCategories(stream.id, stream.box_art_url)">
-      </div>
-    </div>
-  </div>
-
-  <label v-text="selectCategory"></label>
-  <img :src=selectCategoryImgSrc>
-
-  <input v-model="inputChannelText" type="text" class="form-control">
-  <button v-on:click="SearchChannels()">検索</button>
+<div class="searhApp">
+  <div class="searchCategories">
+    <input v-model="inputCategoryText" type="text" class="form-control">
+    <button v-on:click="SearchCategories()">検索</button>
+    <!--<div class="row">
+      <b-table :data="streamLists" :colums="columns"></b-table>
+    </div>-->
     <div class="row">
-    <div class="columns large-3 medium-6" v-for="channel in channelLists" :key="channel">
-      <div class="card"> 
-          <div class="channel-text">{{ channel.title }}</div>
+      <div class="columns large-3 medium-6" v-for="stream in streamLists" :key="stream">
+        <div class="card"> 
+          <img :src=stream.box_art_url v-on:click="SelectCategories(stream.id, stream.box_art_url)">
+          <div class="stream-text">{{ stream.name }}</div>
+        </div>
       </div>
     </div>
   </div>
+
+  <div class="searchChannels">
+    <label v-text="selectCategory"></label>
+    <img :src=selectCategoryImgSrc>
+
+    <input v-model="inputChannelText" type="text" class="form-control">
+    <button v-on:click="SearchChannels()">検索</button>
+      <div class="row">
+      <div class="columns large-3 medium-6" v-for="channel in channelLists" :key="channel">
+        <div class="card" v-on:click="StreamJump(channel)"> 
+          <img :src=ImageReplace(channel.thumbnail_url) />
+          <div class="channel-text">{{ channel.title }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 </template>
 
@@ -36,6 +45,20 @@ export default {
       selectCategoryImgSrc:"",
       streamLists: [],
       channelLists: [],
+      colums:[
+        {
+          filed: 'id',
+          label: 'ID',
+        },
+        {
+          filed: 'name',
+          label: 'タイトル',
+        },
+        {
+          filed: 'box_art_url',
+          label: '画像',
+        },
+      ]
     }
   },
   methods: {
@@ -69,52 +92,40 @@ export default {
         }        
       }).catch((error) => { console.log(error); });
     },
+
+    // 配信画像のサイズ変換
+    ImageReplace(src){
+      return src.replace("{width}" ,96).replace("{height}", 48);
+    },
+
+    // 配信を開く
+    StreamJump(channel){
+      var jumpUrl = "https://www.twitch.tv/" + channel.user_login;
+      window.open(jumpUrl)
+    },
+
   },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-body {
-  line-height: 1.5;
-  overflow-x: hidden;
-  font-family: Roboto, serif;
+*{
+  box-sizing: border-box;
 }
 
-h1, h2, h3, h4 {
-  margin: 1em 0 .5em;
-  line-height: 1.25;
-}
-
-#navbar {
-  background-color: black;
-  width: 100vw;
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: white;
-  text-align: center;
-}
-
-#app {
-  margin-top: 70px;
+.searhApp{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  align-content: center;
 }
 
-.content {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  align-items: center;
+.item-list .searchCategories{
+  width: 30vh;
+  height: 100vh;
 }
 
-.content div {
-  margin: 1em;
+.item-list .searchChannels{
+  width: 70vh;
+  height: 100vh;
 }
 
 .row {
@@ -142,4 +153,5 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: row;
 }
+
 </style>
