@@ -9,7 +9,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios, Buefy)
 axios.defaults.headers.common [`Client-ID`]='j1defdsq0bq2li4fz7dtjo5e79du80';
-axios.defaults.headers.common [`Authorization`]='Bearer gmamev1825o8hxjci9lvw6jwvw4pbp';
+axios.defaults.headers.common [`Authorization`]='Bearer atejm37mfs85e1je1li5xxtnratr3w';
 
 new Vue({
   render: h => h(App),

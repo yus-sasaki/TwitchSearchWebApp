@@ -1,32 +1,47 @@
 <template>
 <div class="searhApp">
-  <div class="searchCategories">
-    <input v-model="inputCategoryText" type="text" class="form-control">
-    <button v-on:click="SearchCategories()">検索</button>
-    <!--<div class="row">
-      <b-table :data="streamLists" :colums="columns"></b-table>
-    </div>-->
-    <div class="row">
-      <div class="columns large-3 medium-6" v-for="stream in streamLists" :key="stream">
-        <div class="card"> 
-          <img :src=stream.box_art_url v-on:click="SelectCategories(stream.id, stream.box_art_url)">
-          <div class="stream-text">{{ stream.name }}</div>
+  <div class="section">
+      <div class="searchCategories">
+        <div class="inputregion">
+          <input v-model="inputCategoryText" type="text" class="input" placeholder="ゲームタイトル">
+          <button class="button" v-on:click="SearchCategories()">検索</button>
+        </div>
+        <!--<div class="row">
+          <b-table :data="streamLists" :colums="columns"></b-table>
+        </div>-->
+        <div class="row">
+          <div class="columns large-3 medium-6" v-for="stream in streamLists" :key="stream">
+            <div class="card"> 
+
+              <div class="image-container">
+                <img :src=stream.box_art_url v-on:click="SelectCategories(stream.id, stream.box_art_url)">
+              </div>
+
+              <div class="image-title">
+                <div class="stream-text">{{ stream.name }}</div>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
-    </div>
   </div>
+  <div class="section">
+    <div class="searchChannels">
+      <label v-text="selectCategory"></label>
+      <img :src=selectCategoryImgSrc>
 
-  <div class="searchChannels">
-    <label v-text="selectCategory"></label>
-    <img :src=selectCategoryImgSrc>
+      <div class="inputregion">
+        <input v-model="inputChannelText" type="text" class="input"  placeholder="配信タイトル">
+        <button class="button" v-on:click="SearchChannels()">検索</button>
+      </div>
 
-    <input v-model="inputChannelText" type="text" class="form-control">
-    <button v-on:click="SearchChannels()">検索</button>
       <div class="row">
-      <div class="columns large-3 medium-6" v-for="channel in channelLists" :key="channel">
-        <div class="card" v-on:click="StreamJump(channel)"> 
-          <img :src=ImageReplace(channel.thumbnail_url) />
-          <div class="channel-text">{{ channel.title }}</div>
+        <div class="columns large-3 medium-6" v-for="channel in channelLists" :key="channel">
+          <div class="card" v-on:click="StreamJump(channel)"> 
+            <img :src=ImageReplace(channel.thumbnail_url) />
+            <div class="channel-text">{{ channel.title }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -116,6 +131,7 @@ export default {
 
 .searhApp{
   display: flex;
+  flex-direction: column;
 }
 
 .item-list .searchCategories{
@@ -152,6 +168,21 @@ export default {
 .stats {
   display: flex;
   flex-direction: row;
+}
+
+.inputregion{
+  display: flex;
+  flex-direction: row;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+}
+
+.image-title {
+  text-align: center;
+  margin-top: 10px;
 }
 
 </style>
